@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import views.Loteria;
 
+
 import java.io.IOException;
 
 public class HelloApplication extends Application {
