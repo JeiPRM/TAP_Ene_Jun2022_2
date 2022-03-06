@@ -1,19 +1,23 @@
 package views;
 
+import events.EventoLoteria;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import events.EventoLoteria;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 
-public class Loteria extends Stage {
+public class Loteria extends Stage implements EventHandler {
 
     private VBox vBox;
     private HBox hBox1, hBox2;
@@ -21,51 +25,78 @@ public class Loteria extends Stage {
     private Label lblTiempo;
     private GridPane gdpPlantilla;
     private Image imgCarta;
+    private ImageView imvCarta;
     private Scene escena;
-
-    private String[] arImagenes = {"barril.jpeg", "chavorruco.jpeg", "luchador.jpeg", "tacos.jpeg", "botella.jpeg"};
+    private String[] arImagenes = {"barril.jpeg","botella.jpeg","catrin.jpeg","chavorruco.jpeg","concha.jpeg","graduada.jpeg","luchador.jpeg","maceta.jpeg"};
     private Button[][] arBtnPlantilla = new Button[4][2];
-    private Image imgCartaP;
-    private ImageView imv;
-
 
     public Loteria(){
         CrearUI();
-        this.setTitle("Loteria");
+        this.setTitle("Loteria :)");
         this.setScene(escena);
         this.show();
     }
 
     private void CrearUI() {
-        btnAtras = new Button("Atras");
+
+        //EventoLoteria objEvento = new EventoLoteria();
+        btnAtras     = new Button("Anterior");
+        btnAtras.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventoLoteria(1));
+        btnAtras.setPrefWidth(100);
         btnSiguiente = new Button("Siguiente");
+        //btnSiguiente.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventoLoteria(2));
+        btnSiguiente.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Hola evento 3");
+            }
+        });
+        btnSiguiente.setPrefWidth(100);
         lblTiempo = new Label("00:00");
         hBox1 = new HBox();
-        hBox1.getChildren().addAll(btnAtras, btnSiguiente, lblTiempo);
+        hBox1.setSpacing(5);
+        hBox1.getChildren().addAll(btnAtras,btnSiguiente,lblTiempo);
 
         gdpPlantilla = new GridPane();
-        CrearPlantilla();
-        hBox2 = new HBox();
-        hBox2.getChildren().addAll(gdpPlantilla);
+
+        imgCarta = new Image("file:///C:\\Users\\juan1\\IdeaProjects\\Proyecto2022_2\\src\\main\\java\\Images\\tacos.jpeg");
+        imvCarta = new ImageView(imgCarta);
+        imvCarta.setFitHeight(200);
+        imvCarta.setFitWidth(150);
+
+        hBox2        = new HBox();
+        hBox2.setSpacing(5);
+        hBox2.getChildren().addAll(gdpPlantilla, imvCarta);
+
+        btnJugar     = new Button("Jugar");
+        btnJugar.setPrefWidth(290);
+        btnJugar.addEventHandler(MouseEvent.MOUSE_CLICKED,this);
 
         vBox = new VBox();
-        vBox.getChildren().addAll(hBox1,hBox2);
+        vBox.setPadding(new Insets(5));
+        vBox.setSpacing(5);
+        vBox.getChildren().addAll(hBox1,hBox2,btnJugar);
 
-
-        escena = new Scene(vBox, 700,500);
-        // me falta definir la anchura y la longitud
-
+        escena = new Scene(vBox,300,360);
     }
 
-    private void CrearPlantilla() {
+    private void CrearPlantillas() {
+
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 4; j++){
+            for (int j = 0; j < 4; j++) {
+                Image imgCartP = new Image("file:///C:\\Users\\juan1\\IdeaProjects\\Proyecto2022_2\\src\\main\\java\\Images"+arImagenes[2]);
+                ImageView imv = new ImageView(imgCartP);
+                imv.setFitHeight(60);
+                imv.setFitWidth(50);
                 arBtnPlantilla[j][i] = new Button();
-                imgCartaP = new Image("file:///C:\\Users\\juan1\\IdeaProjects\\Proyecto2022_2\\src\\main\\java\\Images\\barril.jpeg") ; // me falta añadir la ruta relativa
-                imv = new ImageView(imgCartaP);
                 arBtnPlantilla[j][i].setGraphic(imv);
                 gdpPlantilla.add(arBtnPlantilla[j][i],i,j);
             }
         }
+    }
+
+    @Override
+    public void handle(Event event) {
+        System.out.println("Mi primer evento Fovifest :)");
     }
 }
